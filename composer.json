@@ -1,0 +1,8 @@
+{
+    "autoload": {
+        "psr-4": {
+            "Database\\": "Database/",
+            "FileCheck\\": "FileCheck/"
+        }
+    }
+}

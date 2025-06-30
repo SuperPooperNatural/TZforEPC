@@ -1,0 +1,33 @@
+Вместо select * from data,link,info where link.info_id = info.id and link.data_id = data.id;
+
+SELECT data.*, info.*, link.*
+FROM link
+JOIN data ON link.data_id = data.id
+JOIN info ON link.info_id = info.id;
+
+
+Жоины подразумевают связку таблиц для оптимизации, но как оказалось MyISAM не поддерживает внешние ключи. Поскольку на часах 22:31 и писать в такое
+время неэтично, предположим что движок можно сменить на InnoDB
+CREATE TABLE `info` (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `name` varchar(255) DEFAULT NULL,
+    `desc` text DEFAULT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=cp1251;
+
+CREATE TABLE `data` (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `date` date DEFAULT NULL,
+    `value` INT(11) DEFAULT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=cp1251;
+
+CREATE TABLE `link` (
+    `data_id` int(11) NOT NULL,
+    `info_id` int(11) NOT NULL,
+    PRIMARY KEY (`data_id`, `info_id`),
+    KEY `idx_data_id` (`data_id`),
+    KEY `idx_info_id` (`info_id`),
+    CONSTRAINT `fk_link_data` FOREIGN KEY (`data_id`) REFERENCES `data`(`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT `fk_link_info` FOREIGN KEY (`info_id`) REFERENCES `info`(`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=cp1251;

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <title>Переключение порядка кнопок</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        button {
+            display: block;
+            margin-bottom: 10px;
+            width: 50px;
+        }
+    </style>
+</head>
+<body>
+
+<button id= 1 >1</button>
+<button id= 2 >2</button>
+<button id= 3 >3</button>
+
+<script>
+$(function() {
+    const orders = [
+        [1, 2, 3],
+        [2, 3, 1],
+        [3, 2, 1]
+    ];
+
+    let currentIndex = 0;
+
+    $('button').click(function() {
+        currentIndex = (currentIndex + 1) % orders.length;
+
+        const container = $('body');
+
+        orders[currentIndex].forEach(id => {
+            container.append($('#' + id));
+        });
+    });
+});
+
+</script>
+
+</body>
+</html>
